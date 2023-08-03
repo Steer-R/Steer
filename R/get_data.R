@@ -1,4 +1,4 @@
-#' geocode in Colombia
+#' Retrieve information for Puerto Rico from the US Census Bureau
 #'
 #' This function allows you to retrieve information from the US Census Bureau
 #' @param search The dataframe containing the information.
@@ -25,7 +25,7 @@
 #' @export
 
 get_data <- function(search, survey, year, acs_variables, geography, api_key, geometry, path, file_type, CRS, format,
-                     moe_level, name){
+                     moe_level, name, state){
 
   #   ____________________________________________________________________________
   #   Import of required packages                                             ####
@@ -97,6 +97,10 @@ get_data <- function(search, survey, year, acs_variables, geography, api_key, ge
     }
   }
 
+  if (missing(state)){
+    name <- "PR"
+  }
+
   #   ____________________________________________________________________________
   #   Load of the labels dataframes                                           ####
 
@@ -125,7 +129,7 @@ get_data <- function(search, survey, year, acs_variables, geography, api_key, ge
 
   data <- get_acs(
     county = search,       # Condado de búsqueda
-    state = "PR",          # Estado de búsqueda (PR = Puerto Rico)
+    state = state,          # Estado de búsqueda (PR = Puerto Rico)
     geography = geography, # Mínima geografía de búsqeuda
     survey = survey,       # Encuesta de búsuqeda (American Comunity Survey 5 years)
     variables = variables, # Variables de búsqueda
@@ -170,7 +174,7 @@ get_data <- function(search, survey, year, acs_variables, geography, api_key, ge
     file_path <- paste0(path, name, ".", file_type)
 
     if(file.exists(file_path)){
-      st_write(data, file_path, delete_layer = T)
+      st_write(data_dep, file_path, delete_layer = T)
       message(str_wrap(paste0(
         "There was already a file with the same name in the path provided, the previous file will be replaced.",
         "The dataset was succesfully exported to the specified path: ",
@@ -179,7 +183,7 @@ get_data <- function(search, survey, year, acs_variables, geography, api_key, ge
         ".", file_type
       )))
     } else {
-      st_write(data, file_path)
+      st_write(data_dep, file_path)
       message(str_wrap(paste0(
         "The dataset was succesfully exported to the specified path: ",
         path,
