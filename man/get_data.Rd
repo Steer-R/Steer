@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_data.R
 \name{get_data}
 \alias{get_data}
-\title{geocode in Colombia}
+\title{Retrieve information for Puerto Rico from the US Census Bureau}
 \usage{
 get_data(
   search,
@@ -17,7 +17,8 @@ get_data(
   CRS,
   format,
   moe_level,
-  name
+  name,
+  state
 )
 }
 \arguments{
