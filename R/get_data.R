@@ -27,8 +27,6 @@
 get_data <- function(search, survey, year, acs_variables, geography, api_key, geometry, path, file_type, CRS, format,
                      moe_level, name, state){
 
-  census_api_key(key = "0a5aa2b38e08c2ecd82a4e3c9a1a27f7942b3cd8")
-
   #   ____________________________________________________________________________
   #   Import of required packages                                             ####
 
@@ -38,7 +36,9 @@ get_data <- function(search, survey, year, acs_variables, geography, api_key, ge
   require(mapview)
   require(snakecase)
 
-  #   ____________________________________________________________________________
+  census_api_key(key = "0a5aa2b38e08c2ecd82a4e3c9a1a27f7942b3cd8")
+
+    #   ____________________________________________________________________________
   #   Default inputs assign                                                   ####
 
   ## ACS type of survey
@@ -100,7 +100,7 @@ get_data <- function(search, survey, year, acs_variables, geography, api_key, ge
   }
 
   if (missing(state)){
-    name <- "PR"
+    state <- "PR"
   }
 
   #   ____________________________________________________________________________
@@ -196,5 +196,4 @@ get_data <- function(search, survey, year, acs_variables, geography, api_key, ge
   } else {
     return(data_dep)
   }
-
 }
