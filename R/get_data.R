@@ -27,6 +27,8 @@
 get_data <- function(search, survey, year, acs_variables, geography, api_key, geometry, path, file_type, CRS, format,
                      moe_level, name, state){
 
+  census_api_key(key = "0a5aa2b38e08c2ecd82a4e3c9a1a27f7942b3cd8")
+
   #   ____________________________________________________________________________
   #   Import of required packages                                             ####
 
@@ -176,7 +178,7 @@ get_data <- function(search, survey, year, acs_variables, geography, api_key, ge
     if(file.exists(file_path)){
       st_write(data_dep, file_path, delete_layer = T)
       message(str_wrap(paste0(
-        "There was already a file with the same name in the path provided, the previous file will be replaced.",
+        "There was already a file with the same name in the path provided, the previous file was be replaced.",
         "The dataset was succesfully exported to the specified path: ",
         path,
         name,
