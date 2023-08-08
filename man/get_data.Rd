@@ -22,11 +22,12 @@ get_data(
 )
 }
 \arguments{
-\item{search}{The dataframe containing the information.}
+\item{search}{(optional) The name of a county to search specific information. If ommited, the information will be for all
+Puerto Rico.}
 
-\item{survey}{The CRS for geocoding the addresses.}
+\item{survey}{The ACS survey to be searched. The ACS contains one-year, three-year, and five-year surveys expressed as "acs1", "acs3", and "acs5".}
 
-\item{year}{The name of the column with the id for keeping track of your data.}
+\item{year}{The year, or endyear, of the ACS sample. As now, 5-year ACS data is available from 2009 through 2021; 1-year ACS data is available from 2005 through 2021, except for 2020.}
 
 \item{acs_variables}{The name of the column with the addresses for geocoding.}
 

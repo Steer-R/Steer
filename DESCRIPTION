@@ -12,8 +12,7 @@ LazyData: true
 RoxygenNote: 7.2.3
 Imports:
   tidycensus,
-  tidyverse,
+  dplyr,
   sf,
-  mapview,
   snakecase
 Roxygen: list(markdown = TRUE)

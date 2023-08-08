@@ -1,9 +1,10 @@
 #' Retrieve information for Puerto Rico from the US Census Bureau
 #'
 #' This function allows you to retrieve information from the US Census Bureau
-#' @param search The dataframe containing the information.
-#' @param survey The CRS for geocoding the addresses.
-#' @param year The name of the column with the id for keeping track of your data.
+#' @param search (optional) The name of a county to search specific information. If ommited, the information will be for all
+#' Puerto Rico.
+#' @param survey The ACS survey to be searched. The ACS contains one-year, three-year, and five-year surveys expressed as "acs1", "acs3", and "acs5".
+#' @param year The year, or endyear, of the ACS sample. As now, 5-year ACS data is available from 2009 through 2021; 1-year ACS data is available from 2005 through 2021, except for 2020.
 #' @param acs_variables The name of the column with the addresses for geocoding.
 #' @param geography The name of the column with the city of the address.
 #' @param path description
@@ -31,9 +32,8 @@ get_data <- function(search, survey, year, acs_variables, geography, api_key, ge
   #   Import of required packages                                             ####
 
   require(tidycensus)
-  require(tidyverse)
+  require(dplyr)
   require(sf)
-  require(mapview)
   require(snakecase)
 
   census_api_key(key = "0a5aa2b38e08c2ecd82a4e3c9a1a27f7942b3cd8")
