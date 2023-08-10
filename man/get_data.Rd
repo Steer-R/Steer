@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_data.R
 \name{get_data}
 \alias{get_data}
-\title{Retrieve information for Puerto Rico from the US Census Bureau}
+\title{Get information from the American Community Survey associated with a spatial element}
 \usage{
 get_data(
   search,
@@ -25,13 +25,20 @@ get_data(
 \item{search}{(optional) The name of a county to search specific information. If ommited, the information will be for all
 Puerto Rico.}
 
-\item{survey}{The ACS survey to be searched. The ACS contains one-year, three-year, and five-year surveys expressed as "acs1", "acs3", and "acs5".}
+\item{survey}{The ACS survey to be searched. The ACS contains one-year, three-year, and five-year surveys expressed as
+"acs1", "acs3", and "acs5".}
 
-\item{year}{The year, or endyear, of the ACS sample. As now, 5-year ACS data is available from 2009 through 2021; 1-year ACS data is available from 2005 through 2021, except for 2020.}
+\item{year}{The year, or endyear, of the ACS sample. As now, 5-year ACS data is available from 2009 through 2021; 1-year
+ACS data is available from 2005 through 2021, except for 2020.}
 
-\item{acs_variables}{The name of the column with the addresses for geocoding.}
+\item{acs_variables}{The code of the variables to be searched in the acs.}
 
-\item{geography}{The name of the column with the city of the address.}
+\item{geography}{The geography scale to retrieve the information. refer to
+\href{https://walker-data.com/tidycensus/articles/basic-usage.html#geography-in-tidycensus}{Tidycensus geographies} to see the available gegraphies.}
+
+\item{api_key}{key}
+
+\item{geometry}{geometry}
 
 \item{path}{description}
 
@@ -44,21 +51,30 @@ Puerto Rico.}
 \item{moe_level}{description}
 
 \item{name}{description}
+
+\item{state}{state}
 }
 \value{
 The coordinates of the address given, and the match score.
 }
 \description{
-This function allows you to retrieve information from the US Census Bureau
+\code{get_data()} download a dataset of information from the American Community Survey, using an API connection to
+the US Census Bureau. This dataset may include a geometry column, allowing to create a spatial feature object
+with the downloaded variables
 }
 \examples{
-variables <- c("DP05_0001E", "S1701_C03_001E", "B18101_001E", "B18101_004E", "B18101_007E", "B18101_010E",
-               "B18101_013E", "B18101_016E", "B18101_019E", "B18101_023E", "B18101_026E", "B18101_029E",
-               "B18101_032E", "B18101_035E", "B18101_038E")
+variables <- c(
+  "DP05_0001E", "S1701_C03_001E", "B18101_001E", "B18101_004E", "B18101_007E", "B18101_010E",
+  "B18101_013E", "B18101_016E", "B18101_019E", "B18101_023E", "B18101_026E", "B18101_029E",
+  "B18101_032E", "B18101_035E", "B18101_038E"
+)
 
 info <- get_data(
   acs_variables = variables
-  )
+)
+}
+\seealso{
+\code{\link[tidycensus:get_acs]{tidycensus::get_acs()}} which this function wraps
 }
 \keyword{Colombia}
 \keyword{address.}
