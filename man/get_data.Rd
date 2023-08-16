@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_data.R
 \name{get_data}
 \alias{get_data}
-\title{Get information from the American Community Survey associated with a spatial element}
+\title{Get information from the American Community Survey API}
 \usage{
 get_data(
   search,
@@ -22,45 +22,74 @@ get_data(
 )
 }
 \arguments{
-\item{search}{(optional) The name of a county to search specific information. If ommited, the information will be for all
-Puerto Rico.}
+\item{search}{(optional) The name of a county to search specific information. If omitted, the information will be for all
+the state.}
 
 \item{survey}{The ACS survey to be searched. The ACS contains one-year, three-year, and five-year surveys expressed as
-"acs1", "acs3", and "acs5".}
+"acs1", "acs3", and "acs5".Default to "acs5"}
 
 \item{year}{The year, or endyear, of the ACS sample. As now, 5-year ACS data is available from 2009 through 2021; 1-year
-ACS data is available from 2005 through 2021, except for 2020.}
+ACS data is available from 2005 through 2021, except for 2020. If no year is provided, the last year with available
+information will be used}
 
-\item{acs_variables}{The code of the variables to be searched in the acs.}
+\item{acs_variables}{The code of the variables to be searched in the acs as strings. This input may accept a single value
+or a vector variable with multiple inputs (i.e., "DP05_0001E" or c("DP05_0001E", "S1701_C03_001E")). To see the available
+variables for the acs5 2021, refer to:
+\href{https://api.census.gov/data/2021/acs/acs5/variables.html}{List of variables for 2021}, for other years,
+please search in \hfer{https://www.census.gov/data/developers/data-sets.html}{US Census Bureau Available APÏs}.}
 
 \item{geography}{The geography scale to retrieve the information. refer to
-\href{https://walker-data.com/tidycensus/articles/basic-usage.html#geography-in-tidycensus}{Tidycensus geographies} to see the available gegraphies.}
+\href{https://walker-data.com/tidycensus/articles/basic-usage.html#geography-in-tidycensus}{Tidycensus geographies}
+to see the available gegraphies.}
 
-\item{api_key}{key}
+\item{api_key}{The API key provided to you from the Census formated in quotes. A key can be acquired at
+\href{http://api.census.gov/data/key_signup.html}{US Census Bureau API Key}.}
 
-\item{geometry}{geometry}
+\item{geometry}{(logical) if FALSE (the default), return a regular tibble of ACS data. if TRUE, uses the tigris package
+to return
+an sf tibble with simple feature geometry in the 'geometry' column.}
 
-\item{path}{description}
+\item{path}{The path where the resultant dataset will be stored. If omitted, the dataframe will be available only
+locally}
 
-\item{file_type}{description}
+\item{file_type}{(string) The extension used to save the dataset. It can be a spatial object (i.e., "shp", "gpkg", "gdb")
+or a text object (i.e., "csv", "txt"). The string must not include the intial dot. Default to "gpkg".}
 
-\item{CRS}{description}
+\item{CRS}{(numeric) The four digit EPSG code for the Coordinate Reference System of the spatial object output.
+If not sure about which is the desired EPSG code, refer to \href{https://epsg.org/search/by-name}{EPSG codes} to see
+a list of all availabel codes an their description. Default to North American Datu of 1983 (NAD83), EPSG: 4269.}
 
-\item{format}{description}
+\item{format}{One of "tidy" (the default) in which each row represents an enumeration unit-variable combination, or "wide"
+in which each row represents an enumeration unit and the variables are in the columns.}
 
-\item{moe_level}{description}
+\item{moe_level}{The confidence level of the returned margin of error. One of 90 (the default), 95, or 99.}
 
-\item{name}{description}
+\item{name}{The name of the resultant file. Default to "data_pr"}
 
-\item{state}{state}
+\item{state}{An optional vector of states for which you are requesting data. State names, postal codes, and FIPS codes are
+accepted. Defaults to "PR"}
 }
 \value{
-The coordinates of the address given, and the match score.
+If geometry is \code{TRUE}, the output will be a spatial dataframe, otherwise it will be a dataframe.
+
+Aditionally, if format is tidy, the output will be a dataset with the following conditions:
+\itemize{
+\item Columns: Each of the variables used as input
+\item Rows: The observation for each variable and each geographical division specified in geography
+\item Geometry columns: If geometry imput is TRUE, a column with the coordinates for the geometry will be included
+}
+
+Please note that, if a path is provided, the resultant dataset will be stored in the desired path, instead of being
+stored in the global environment. Otherwise, the dataset will be available locally.
+
+If format is long, the output will be a dataset where each row will be the value for the variable and geography
+combination. All values will be stored in the column "value", and there will be a column "name" with the corresponding
+variable name.
 }
 \description{
 \code{get_data()} download a dataset of information from the American Community Survey, using an API connection to
 the US Census Bureau. This dataset may include a geometry column, allowing to create a spatial feature object
-with the downloaded variables
+with the downloaded variables.
 }
 \examples{
 variables <- c(
@@ -76,6 +105,3 @@ info <- get_data(
 \seealso{
 \code{\link[tidycensus:get_acs]{tidycensus::get_acs()}} which this function wraps
 }
-\keyword{Colombia}
-\keyword{address.}
-\keyword{geocode}
