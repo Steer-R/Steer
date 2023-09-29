@@ -83,14 +83,16 @@ get_sp_data <- function(year, state, unified, path, name, file_type, county) {
     year <- lubridate::year(now())
 
     capture.output(
-      suppressWarnings(
+      suppressMessages(
         ## Tries to retrieve the information for all counties in the actual year. If it is not found, tries with the later
         ## year
-        while (is(try(counties <- counties(state = state, year = year), silent = TRUE), "try-error")) {
+        while (is(try(vias_año <- roads(state = state, county = "San Juan", year = year, progress_bar = F), silent = TRUE), "try-error")) {
           year <- year - 1
         }
       )
     )
+
+    counties <- counties(state = state, year = year)
 
     ## Prints a message clarifying that year was not provided as input, and returns the last year with available
     ## information used as input for the next stages
@@ -100,7 +102,7 @@ get_sp_data <- function(year, state, unified, path, name, file_type, county) {
     suppressMessages(
       ## If the year was provided, the counties for that year are retrieved
       if(is(try(counties <- counties(state = state, year = year, progress_bar = T), silent = T), "try-error")){
-        stop(str_wrap("There is no available information for the selected year (", year, "), please try again with a previuos year "))
+        stop(str_wrap(paste0("There is no available information for the selected year (", year, "), please try again with a previous year ")))
       }
     )
   }
