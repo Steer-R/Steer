@@ -153,6 +153,12 @@ get_data <- function(search, survey, year, acs_variables, geography, api_key, ge
     state <- "PR"
   }
 
+  if (!missing(path)) {
+    if(!str_ends(path, "/")){
+      path <- paste0(path, "/")
+    }
+  }
+
   #   ____________________________________________________________________________
   #   Load of the labels dataframes                                           ####
 

@@ -64,6 +64,13 @@ get_sp_data <- function(year, state, unified, path, name, file_type, county) {
     name <- "data_sp_pr"
   }
 
+  ## path: If path is provided but does not exists, maybe due to misspelling, the function stops and shows an error message
+  if (!missing(path)) {
+    if (!file.exists(path)) {
+      stop(str_wrap("The path does not exists, please check if you misspelled the path and try again"))
+    }
+  }
+
   #   ____________________________________________________________________________
   #   Counties                                                                ####
 
@@ -92,7 +99,9 @@ get_sp_data <- function(year, state, unified, path, name, file_type, county) {
   } else {
     suppressMessages(
       ## If the year was provided, the counties for that year are retrieved
-      counties <- counties(state = state, year = year, progress_bar = T)
+      if(is(try(counties <- counties(state = state, year = year, progress_bar = T), silent = T), "try-error")){
+        stop(str_wrap("There is no available information for the selected year (", year, "), please try again with a previuos year "))
+      }
     )
   }
 
@@ -158,32 +167,36 @@ get_sp_data <- function(year, state, unified, path, name, file_type, county) {
   } else {
 
     date <- str_sub(str_remove_all(ymd(today()), "-"), 3)
+    if(!str_ends(path, "/")){
+      path <- paste0(path, "/")
+    }
+    file_path <- paste0(path, date, "_", name, ".", file_type)
     if (unified == T){
-      file_path <- paste0(path, date, "_", name, ".", file_type)
+
       if (file.exists(file_path)) {
         message(str_wrap(paste0(
           "There was already a file with the same name in the path provided, the previous file will be replaced."
         )))
-        st_write(vias_df, file_path, delete_layer = T)
-        message(str_wrap(paste0(
-          "The dataset was succesfully exported to the specified path: ", path, name, ".", file_type
-        )))
-      } else {
-        Map(function(df, road_type){
-          file_path <- paste0(path, date, "_", name, "_", road_type, ".", file_type)
-          if (file.exists(file_path)) {
-            message(str_wrap(paste0(
-              "There was already a file with the same name in the path provided, the previous file will be replaced."
-            )))}
-          # invisible(
-          df %>%
-            st_write(paste0(path, date, "_", name, "_", road_type, ".", file_type), delete_layer = T)
-          # )
-        },
-        lista, lista %>% names
-        )
-        # not unified
       }
+      st_write(vias_df, file_path, delete_layer = T)
+      message(str_wrap(paste0(
+        "The dataset was succesfully exported to the specified path: ", path, name, ".", file_type
+      )))
+    } else {
+      Map(function(df, road_type){
+        file_path <- paste0(path, date, "_", name, "_", road_type, ".", file_type)
+        if (file.exists(file_path)) {
+          message(str_wrap(paste0(
+            "There was already a file with the same name in the path provided, the previous file will be replaced."
+          )))}
+        # invisible(
+        df %>%
+          st_write(paste0(path, date, "_", name, "_", road_type, ".", file_type), delete_layer = T)
+        # )
+      },
+      lista, lista %>% names
+      )
+      # not unified
     }
   }
 }
