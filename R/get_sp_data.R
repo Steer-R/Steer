@@ -99,7 +99,7 @@ get_sp_data <- function(year, state, unified, path, name, file_type, county) {
     message(str_wrap(paste0("Since no year was provided, retrieving data for the year ", year, " which is the
                             latest year with available information.")))
   } else {
-    suppressMessages(
+    suppressWarnings(
       ## If the year was provided, the counties for that year are retrieved
       if(is(try(counties <- counties(state = state, year = year, progress_bar = T), silent = T), "try-error")){
         stop(str_wrap(paste0("There is no available information for the selected year (", year, "), please try again with a previous year ")))
