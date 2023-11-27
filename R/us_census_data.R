@@ -190,7 +190,7 @@ us_census_data <- function(search, survey, year, acs_variables, geography, api_k
     state = state, # Estado de búsqueda (PR = Puerto Rico)
     geography = geography, # Mínima geografía de búsqeuda
     survey = survey, # Encuesta de búsuqeda (American Comunity Survey 5 years)
-    asc_variables = variables, # Variables de búsqueda
+    asc_variables = asc_variables, # Variables de búsqueda
     year = year, # Último año de la encuesta
     geometry = geometry, # Inclusión de la variable espacial
     output = format,
