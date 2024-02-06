@@ -202,7 +202,7 @@ us_census_data <- function(search, survey, year, acs_variables, geography, api_k
 
   if (format == "tidy") {
     data_dep <- data %>%
-      separate(NAME, into = c("tract", "municipio", "estado"), sep = ", ") %>%
+      separate(NAME, into = c("tract", "municipio", "estado"), sep = ";") %>%
       mutate(
         tract = str_remove(tract, "Census Tract "),
         municipio = str_remove(municipio, " Municipio")
